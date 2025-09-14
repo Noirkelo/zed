@@ -367,30 +367,35 @@ impl ScrollManager {
         let top_anchor = map
             .buffer_snapshot
             .anchor_at(scroll_top_buffer_point, Bias::Right);
-        // if !self.try_start_anim(
-        //     new_anchor,
-        //     top_row,
-        //     map,
-        //     local,
-        //     autoscroll,
-        //     workspace_id,
-        //     cx,
-        // ) {}
-        self.set_anchor(
-            ScrollAnchor {
+        let anchor=ScrollAnchor {
                 anchor: top_anchor,
                 offset: point(
                     scroll_position.x.max(0.),
                     scroll_top - top_anchor.to_display_point(map).row().as_f32(),
                 ),
-            },
+            };
+        if self.try_start_anim(
+            anchor,
             scroll_top_buffer_point.row,
+            map,
             local,
             autoscroll,
             workspace_id,
-            window,
             cx,
-        )
+        ) {
+            WasScrolled(false)
+        }else{
+            self.set_anchor(
+                anchor,
+                scroll_top_buffer_point.row,
+                local,
+                autoscroll,
+                workspace_id,
+                window,
+                cx,
+            )
+        }
+
     }
 
     fn set_anchor(

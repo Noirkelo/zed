@@ -4,11 +4,11 @@ rustflags = ["-C", "symbol-mangling-version=v0", "--cfg", "tokio_unstable"]
 
 [alias]
 xtask = "run --package xtask --"
-
+[profile.release]
+incremental = true 
 [target.x86_64-unknown-linux-gnu]
 linker = "clang"
-rustflags = ["-C", "link-arg=-fuse-ld=mold"]
-
+rustflags = ["-C", "link-arg=-fuse-ld=mold"] 
 [target.aarch64-unknown-linux-gnu]
 linker = "clang"
 rustflags = ["-C", "link-arg=-fuse-ld=mold"]
